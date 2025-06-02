@@ -15,6 +15,7 @@ X_train , X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, rand
 from sklearn.linear_model import LinearRegression
 reg = LinearRegression()
 reg.fit(X_train,Y_train)
+# Tried the regularizatioon and no need of regularization, the RMSE is still approximately same!
 
 Y_pred = reg.predict(X_test)
 df = pd.DataFrame({'Real Values': Y_test, 'Predicted Values': Y_pred})
@@ -22,6 +23,7 @@ print(df)
 
 from sklearn import metrics 
 print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(Y_test,Y_pred)))
+#Since target is (0-3) a RMSE value of less than 0.9 is good enough
 
 battery_power = int(input("Enter power of your battery:"))
 bluetooth = int(input("Does your mobile have bluetooth(Yes=1 and No=0):"))
