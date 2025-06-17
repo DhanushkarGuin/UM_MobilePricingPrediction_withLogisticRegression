@@ -12,15 +12,18 @@ Y = dataset.iloc[:,-1].values
 
 from sklearn.model_selection import train_test_split
 X_train , X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state=42)
-
 # print(X_train.head())
 
 from sklearn.linear_model import LogisticRegression
-reg = LogisticRegression(max_iter=10000)
-reg.fit(X_train,Y_train)
-# Tried the regularizatioon and no need of regularization
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
 
-Y_pred = reg.predict(X_test)
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('logreg', LogisticRegression(max_iter=10000, solver='lbfgs'))  # You can use other solvers like 'saga' too
+])
+pipeline.fit(X_train, Y_train)
+Y_pred = pipeline.predict(X_test)
 
 from sklearn.metrics import accuracy_score,precision_score,recall_score
 print('Accuracy:', accuracy_score(Y_test,Y_pred))
@@ -28,4 +31,6 @@ print('Precision:', precision_score(Y_test,Y_pred,average='weighted'))
 print('Recall:', recall_score(Y_test,Y_pred,average='weighted'))
 
 import pickle
-pickle.dump(reg,open('reg.pkl','wb'))
+pickle.dump(pipeline,open('pipeline.pkl','wb'))
+
+# print(dataset.columns.tolist())
